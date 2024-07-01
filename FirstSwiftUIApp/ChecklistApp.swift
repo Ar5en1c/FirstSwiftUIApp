@@ -31,6 +31,7 @@ struct ChecklistApp: View {
 
     @State private var newChecklistName = ""
     @State private var newItemName = ""
+    @State private var isAddingNewChecklist = false
 
     var body: some View {
         NavigationView {
@@ -53,10 +54,13 @@ struct ChecklistApp: View {
                         }
                     }
                 }
+                if isAddingNewChecklist {
+                    NewChecklistView(isPresented: $isAddingNewChecklist, checklists: $checklists)
+                }
             }
             .navigationBarTitle("ChecklistApp")
             .toolbar {
-                Button(action: {addNewChecklist()})
+                Button(action: {isAddingNewChecklist = true})
                 {
                     Image(systemName: "plus").padding().bold()
                 }
@@ -66,14 +70,14 @@ struct ChecklistApp: View {
     
     func headerView(for index: Int) -> some View{
         HStack{
-            Text(self.checklists[index].name)
-                .bold()
-                .padding()
-                .frame(width: 300, alignment: .leading)
-                .background(Color.white)
-            Spacer()
-            Image(systemName: self.checklists[index].isExpanded ? "chevron.up" : "chevron.down")
-            .padding()
+                Text(self.checklists[index].name)
+                    .bold()
+                    .padding()
+                    .frame(width: 300, alignment: .leading)
+                    .background(Color.white)
+                Spacer()
+                Image(systemName: self.checklists[index].isExpanded ? "chevron.up" : "chevron.down")
+                    .padding()
         }
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -105,8 +109,8 @@ struct ChecklistApp: View {
         }
     }
 
-    func addNewChecklist() {
-        let newChecklist = Checklist(name: "New Checklist", items: [])
+    func addNewChecklist(for index: Int) {
+        let newChecklist = Checklist(name: newChecklistName, items: [])
         checklists.append(newChecklist)
     }
 
@@ -118,6 +122,28 @@ struct ChecklistApp: View {
         }
     }
 }
+
+struct NewChecklistView: View {
+    @Binding var isPresented: Bool
+    @Binding var checklists: [Checklist]
+    @State private var newChecklistName = ""
+
+    var body: some View {
+        HStack {
+            TextField("New Checklist", text: $newChecklistName)
+
+            Button(action: {
+                checklists.append(Checklist(name: newChecklistName, items: []))
+                newChecklistName = ""
+                isPresented = false
+            }) {
+                Text("Add")
+            }
+        }
+        .padding()
+    }
+}
+
 
 #Preview {
     ChecklistApp()
