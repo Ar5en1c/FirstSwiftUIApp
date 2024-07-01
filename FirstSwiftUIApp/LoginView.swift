@@ -15,12 +15,12 @@ struct LoginView: View {
                     .font(.title.bold())
                 Text("Sign up now for exlusive rewards!")
                     .padding()
-                List{
-                    addLoginTextFieldView(placeholder: "Name", iconName: "person.fill", text: $userName)
-                    addLoginTextFieldView(placeholder: "Email", iconName: "envelope.fill", text: $userEmail)
-                    addLoginTextFieldView(placeholder: "Phone", iconName: "phone.fill", text: $userPhone)
-                    addLoginTextFieldView(placeholder: "Password", iconName: "lock.fill", text: $userPassword)
-                    addLoginTextFieldView(placeholder: "Confirm Password", iconName: "lock.fill", text: $userConfirmPassword)
+                VStack{
+                    addLoginDetailTextFieldView(placeholder: "Name", iconName: "person.fill", text: $userName)
+                    addLoginDetailTextFieldView(placeholder: "Email", iconName: "envelope.fill", text: $userEmail)
+                    addLoginDetailTextFieldView(placeholder: "Phone", iconName: "phone.fill", text: $userPhone)
+                    addLoginDetailTextFieldView(placeholder: "Password", iconName: "lock.fill", text: $userPassword)
+                    addLoginDetailTextFieldView(placeholder: "Confirm Password", iconName: "lock.fill", text: $userConfirmPassword)
                 }.padding(EdgeInsets(top: 5, leading: 50, bottom: 5, trailing: 50))
                 Spacer()
                 Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
@@ -37,7 +37,7 @@ struct LoginView: View {
     }
 }
 
-struct addLoginTextFieldView: View {
+struct addLoginDetailTextFieldView: View {
     var placeholder: String
     var iconName: String
     @Binding var text: String
