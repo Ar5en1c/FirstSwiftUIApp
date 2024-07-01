@@ -60,10 +60,21 @@ struct ChecklistApp: View {
             }
             .navigationBarTitle("ChecklistApp")
             .toolbar {
-                Button(action: {isAddingNewChecklist = true})
-                {
-                    Image(systemName: "plus").padding().bold()
-                }
+                    HStack{
+                        Button(action: {isAddingNewChecklist = true})
+                        {
+                            Image(systemName: "plus").padding().bold()
+                        }
+                        Spacer()
+                        Button(action: {
+                            if let index = checklists.firstIndex(where: { $0.isExpanded }) {
+                                deleteChecklist(for: index)
+                            }
+                        })
+                        {
+                            Image(systemName: "xmark.bin").padding().bold()
+                        }
+                    }
             }
         }
     }
@@ -113,6 +124,10 @@ struct ChecklistApp: View {
         let newChecklist = Checklist(name: newChecklistName, items: [])
         checklists.append(newChecklist)
     }
+    
+    func deleteChecklist(for index: Int) {
+        checklists.remove(at: index)
+    }
 
     func addItemToChecklist(checklistIndex: Int) {
         if !newItemName.isEmpty {
@@ -133,10 +148,11 @@ struct NewChecklistView: View {
             TextField("New Checklist", text: $newChecklistName)
 
             Button(action: {
-                checklists.append(Checklist(name: newChecklistName, items: []))
-                newChecklistName = ""
-                isPresented = false
-            }) {
+                if newChecklistName != "" {
+                    checklists.append(Checklist(name: newChecklistName, items: []))
+                    newChecklistName = ""
+                    isPresented = false
+                }}) {
                 Text("Add")
             }
         }
