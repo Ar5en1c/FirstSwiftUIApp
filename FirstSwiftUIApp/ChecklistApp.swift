@@ -19,6 +19,7 @@ struct Checklist: Identifiable {
     var name: String
     var items: [ChecklistItem]
     var isExpanded: Bool = false
+    var newItemName: String = ""
 }
 
 struct ChecklistApp: View {
@@ -28,13 +29,18 @@ struct ChecklistApp: View {
             ChecklistItem(name: "Milk", isChecked: true)
         ], isExpanded: false)
     ]
-
+    
     @State private var newChecklistName = ""
     @State private var newItemName = ""
     @State private var isAddingNewChecklist = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
+            ZStack{
+                LaunchScreen().backgroundView(data: Array(1...70))
+                    .ignoresSafeArea()
+                    .frame(height: 0)
+                }
             List {
                 ForEach(checklists.indices, id: \.self) { index in
                     Section(header: headerView(for: index)) {
@@ -58,12 +64,12 @@ struct ChecklistApp: View {
                     NewChecklistView(isPresented: $isAddingNewChecklist, checklists: $checklists)
                 }
             }
-            .navigationBarTitle("ChecklistApp")
+            .navigationTitle("ChecklistApp")
             .toolbar {
                     HStack{
                         Button(action: {isAddingNewChecklist = true})
                         {
-                            Image(systemName: "plus").padding().bold()
+                            Image(systemName: "plus").padding().bold().foregroundColor(.white)
                         }
                         Spacer()
                         Button(action: {
@@ -72,7 +78,7 @@ struct ChecklistApp: View {
                             }
                         })
                         {
-                            Image(systemName: "xmark.bin").padding().bold()
+                            Image(systemName: "xmark.bin").padding().bold().foregroundColor(.white)
                         }
                     }
             }
@@ -100,7 +106,7 @@ struct ChecklistApp: View {
     
     func addItemView(for index: Int) -> some View {
         HStack {
-            TextField("Add item...", text: $newItemName)
+            TextField("Add item...", text: $checklists[index].newItemName)
             Spacer()
             Button(action: {
                 addItemToChecklist(checklistIndex: index)
@@ -130,13 +136,15 @@ struct ChecklistApp: View {
     }
 
     func addItemToChecklist(checklistIndex: Int) {
-        if !newItemName.isEmpty {
-            let newItem = ChecklistItem(name: newItemName, isChecked: false)
+        let checklist = checklists[checklistIndex]
+        if !checklist.newItemName.isEmpty {
+            let newItem = ChecklistItem(name: checklist.newItemName, isChecked: false)
             checklists[checklistIndex].items.append(newItem)
-            newItemName = ""
+            checklists[checklistIndex].newItemName = ""
         }
     }
 }
+
 
 struct NewChecklistView: View {
     @Binding var isPresented: Bool
@@ -145,7 +153,7 @@ struct NewChecklistView: View {
 
     var body: some View {
         HStack {
-            TextField("New Checklist", text: $newChecklistName)
+            TextField("Add checklist...", text: $newChecklistName)
 
             Button(action: {
                 if newChecklistName != "" {
