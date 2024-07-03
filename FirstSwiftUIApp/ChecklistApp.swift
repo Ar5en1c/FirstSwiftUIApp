@@ -33,40 +33,55 @@ struct ChecklistApp: View {
     @State private var newChecklistName = ""
     @State private var newItemName = ""
     @State private var isAddingNewChecklist = false
+    @State private var searchText = ""
+
+    var filteredChecklists: [Checklist] {
+        if searchText.isEmpty {
+            return checklists
+        } else {
+            return checklists.filter { checklist in
+                checklist.name.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
 
     var body: some View {
         NavigationStack {
-            ZStack{
-                LaunchScreen().backgroundView(data: Array(1...70))
-                    .ignoresSafeArea()
-                    .frame(height: 0)
+            VStack {
+                ZStack {
+                    LaunchScreen().backgroundView(data: Array(1...70))
+                        .ignoresSafeArea()
+                        .frame(height: 0)
                 }
-            List {
-                ForEach(checklists.indices, id: \.self) { index in
-                    Section(header: headerView(for: index)) {
-                        if self.checklists[index].isExpanded {
-                            ForEach(self.checklists[index].items) { item in
-                                HStack{
-                                    Text(item.name)
-                                    Spacer()
-                                    Button(action:{
-                                        toggleItemChecked(checklistIndex: index, itemId: item.id)
-                                    }) {
-                                        Image(systemName: item.isChecked ? "checkmark.square.fill" : "square")
+                Spacer()
+                SearchBar(searchText: $searchText)
+                Spacer()
+                List {
+                    ForEach(filteredChecklists.indices, id: \.self) { index in
+                        Section(header: headerView(for: index)) {
+                            if self.checklists[index].isExpanded {
+                                ForEach(self.checklists[index].items) { item in
+                                    HStack{
+                                        Text(item.name)
+                                        Spacer()
+                                        Button(action:{
+                                            toggleItemChecked(checklistIndex: index, itemId: item.id)
+                                        }) {
+                                            Image(systemName: item.isChecked ? "checkmark.square.fill" : "square")
+                                        }
                                     }
                                 }
+                                addItemView(for: index)
                             }
-                            addItemView(for: index)
                         }
                     }
+                    if isAddingNewChecklist {
+                        NewChecklistView(isPresented: $isAddingNewChecklist, checklists: $checklists)
+                    }
                 }
-                if isAddingNewChecklist {
-                    NewChecklistView(isPresented: $isAddingNewChecklist, checklists: $checklists)
-                }
-            }
-            .navigationTitle("ChecklistApp")
-            .toolbar {
-                    HStack{
+                .navigationTitle("ChecklistApp")
+                .toolbar {
+                    HStack {
                         Button(action: {isAddingNewChecklist = true})
                         {
                             Image(systemName: "plus").padding().bold().foregroundColor(.white)
@@ -81,6 +96,7 @@ struct ChecklistApp: View {
                             Image(systemName: "xmark.bin").padding().bold().foregroundColor(.white)
                         }
                     }
+                }
             }
         }
     }
@@ -165,6 +181,38 @@ struct NewChecklistView: View {
             }
         }
         .padding()
+    }
+}
+
+struct SearchBar: View {
+    @Binding var searchText: String
+
+    var body: some View {
+        HStack {
+            Spacer()
+            ZStack{
+                TextField("Search...", text: $searchText)
+                    .cornerRadius(10)
+                    .padding(8)
+            }
+            Spacer()
+            if !searchText.isEmpty {
+                Button(action: {
+                    searchText = ""
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.black)
+                        .padding(.trailing, 8)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .opacity(searchText.isEmpty ? 0 : 1)
+            }
+            Spacer()
+        }
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
+        .padding(.horizontal, 20)
+        
     }
 }
 
