@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0C42ACBE2C3317FF00CA229B /* TextFieldListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C42ACBD2C3317FF00CA229B /* TextFieldListView.swift */; };
+		0C42ACC02C34442000CA229B /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C42ACBF2C34442000CA229B /* TableView.swift */; };
+		0C5D69392C34F10200010D08 /* PractiseGround.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5D69382C34F10200010D08 /* PractiseGround.swift */; };
 		0CEF79232C2DEE9D00697CFA /* FirstSwiftUIAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEF79222C2DEE9D00697CFA /* FirstSwiftUIAppApp.swift */; };
 		0CEF79252C2DEE9D00697CFA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEF79242C2DEE9D00697CFA /* ContentView.swift */; };
 		0CEF79272C2DEE9E00697CFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CEF79262C2DEE9E00697CFA /* Assets.xcassets */; };
@@ -17,7 +19,7 @@
 		0CEF79402C2DEE9F00697CFA /* FirstSwiftUIAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEF793F2C2DEE9F00697CFA /* FirstSwiftUIAppUITestsLaunchTests.swift */; };
 		0CEF798E2C2F641300697CFA /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEF798D2C2F641300697CFA /* ListView.swift */; };
 		0CEF79902C2F649E00697CFA /* AddRemoveItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEF798F2C2F649E00697CFA /* AddRemoveItemView.swift */; };
-		0CEF79922C2F6EF900697CFA /* example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEF79912C2F6EF900697CFA /* example.swift */; };
+		0CEF79922C2F6EF900697CFA /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEF79912C2F6EF900697CFA /* LaunchScreen.swift */; };
 		0CEF79942C322A6800697CFA /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEF79932C322A6800697CFA /* LoginView.swift */; };
 		0CEF79962C322B3500697CFA /* ChecklistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEF79952C322B3500697CFA /* ChecklistApp.swift */; };
 /* End PBXBuildFile section */
@@ -41,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		0C42ACBD2C3317FF00CA229B /* TextFieldListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldListView.swift; sourceTree = "<group>"; };
+		0C42ACBF2C34442000CA229B /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		0C5D69382C34F10200010D08 /* PractiseGround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PractiseGround.swift; sourceTree = "<group>"; };
 		0CEF791F2C2DEE9D00697CFA /* FirstSwiftUIApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstSwiftUIApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CEF79222C2DEE9D00697CFA /* FirstSwiftUIAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstSwiftUIAppApp.swift; sourceTree = "<group>"; };
 		0CEF79242C2DEE9D00697CFA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,7 +57,7 @@
 		0CEF793F2C2DEE9F00697CFA /* FirstSwiftUIAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstSwiftUIAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0CEF798D2C2F641300697CFA /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		0CEF798F2C2F649E00697CFA /* AddRemoveItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRemoveItemView.swift; sourceTree = "<group>"; };
-		0CEF79912C2F6EF900697CFA /* example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = example.swift; sourceTree = "<group>"; };
+		0CEF79912C2F6EF900697CFA /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		0CEF79932C322A6800697CFA /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		0CEF79952C322B3500697CFA /* ChecklistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,12 +112,14 @@
 			children = (
 				0CEF79222C2DEE9D00697CFA /* FirstSwiftUIAppApp.swift */,
 				0CEF79242C2DEE9D00697CFA /* ContentView.swift */,
-				0CEF79912C2F6EF900697CFA /* example.swift */,
+				0CEF79912C2F6EF900697CFA /* LaunchScreen.swift */,
 				0CEF798F2C2F649E00697CFA /* AddRemoveItemView.swift */,
 				0CEF798D2C2F641300697CFA /* ListView.swift */,
 				0CEF79952C322B3500697CFA /* ChecklistApp.swift */,
 				0CEF79932C322A6800697CFA /* LoginView.swift */,
 				0C42ACBD2C3317FF00CA229B /* TextFieldListView.swift */,
+				0C42ACBF2C34442000CA229B /* TableView.swift */,
+				0C5D69382C34F10200010D08 /* PractiseGround.swift */,
 				0CEF79262C2DEE9E00697CFA /* Assets.xcassets */,
 				0CEF79282C2DEE9F00697CFA /* Preview Content */,
 			);
@@ -275,10 +281,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CEF79922C2F6EF900697CFA /* example.swift in Sources */,
+				0CEF79922C2F6EF900697CFA /* LaunchScreen.swift in Sources */,
 				0CEF79252C2DEE9D00697CFA /* ContentView.swift in Sources */,
 				0C42ACBE2C3317FF00CA229B /* TextFieldListView.swift in Sources */,
 				0CEF79962C322B3500697CFA /* ChecklistApp.swift in Sources */,
+				0C42ACC02C34442000CA229B /* TableView.swift in Sources */,
+				0C5D69392C34F10200010D08 /* PractiseGround.swift in Sources */,
 				0CEF79942C322A6800697CFA /* LoginView.swift in Sources */,
 				0CEF79232C2DEE9D00697CFA /* FirstSwiftUIAppApp.swift in Sources */,
 				0CEF798E2C2F641300697CFA /* ListView.swift in Sources */,

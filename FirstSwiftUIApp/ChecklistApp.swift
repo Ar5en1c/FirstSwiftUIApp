@@ -19,6 +19,7 @@ struct Checklist: Identifiable {
     var name: String
     var items: [ChecklistItem]
     var isExpanded: Bool = false
+    var newItemName: String = ""
 }
 
 struct ChecklistApp: View {
@@ -28,37 +29,73 @@ struct ChecklistApp: View {
             ChecklistItem(name: "Milk", isChecked: true)
         ], isExpanded: false)
     ]
-
+    
     @State private var newChecklistName = ""
     @State private var newItemName = ""
+    @State private var isAddingNewChecklist = false
+    @State private var searchText = ""
+
+    var filteredChecklists: [Checklist] {
+        if searchText.isEmpty {
+            return checklists
+        } else {
+            return checklists.filter { checklist in
+                checklist.name.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
 
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(checklists.indices, id: \.self) { index in
-                    Section(header: headerView(for: index)) {
-                        if self.checklists[index].isExpanded {
-                            ForEach(self.checklists[index].items) { item in
-                                HStack{
-                                    Text(item.name)
-                                    Spacer()
-                                    Button(action:{
-                                        toggleItemChecked(checklistIndex: index, itemId: item.id)
-                                    }) {
-                                        Image(systemName: item.isChecked ? "checkmark.square.fill" : "square")
+        NavigationStack {
+            VStack {
+                ZStack {
+                    LaunchScreen().backgroundView(data: Array(1...70))
+                        .ignoresSafeArea()
+                        .frame(height: 0)
+                }
+                Spacer()
+                SearchBar(searchText: $searchText)
+                Spacer()
+                List {
+                    ForEach(filteredChecklists.indices, id: \.self) { index in
+                        Section(header: headerView(for: index)) {
+                            if self.checklists[index].isExpanded {
+                                ForEach(self.checklists[index].items) { item in
+                                    HStack{
+                                        Text(item.name)
+                                        Spacer()
+                                        Button(action:{
+                                            toggleItemChecked(checklistIndex: index, itemId: item.id)
+                                        }) {
+                                            Image(systemName: item.isChecked ? "checkmark.square.fill" : "square")
+                                        }
                                     }
                                 }
+                                addItemView(for: index)
                             }
-                            addItemView(for: index)
                         }
                     }
+                    if isAddingNewChecklist {
+                        NewChecklistView(isPresented: $isAddingNewChecklist, checklists: $checklists)
+                    }
                 }
-            }
-            .navigationBarTitle("ChecklistApp")
-            .toolbar {
-                Button(action: {addNewChecklist()})
-                {
-                    Image(systemName: "plus").padding().bold()
+                .navigationTitle("ChecklistApp")
+                .toolbar {
+                    HStack {
+                        Button(action: {isAddingNewChecklist = true})
+                        {
+                            Image(systemName: "plus").padding().bold().foregroundColor(.white)
+                        }
+                        Spacer()
+                        Button(action: {
+                            if let index = checklists.firstIndex(where: { $0.isExpanded }) {
+                                deleteChecklist(for: index)
+                            }
+                        })
+                        {
+                            Image(systemName: "xmark.bin").padding().bold().foregroundColor(.white)
+                        }
+                    }
                 }
             }
         }
@@ -66,14 +103,14 @@ struct ChecklistApp: View {
     
     func headerView(for index: Int) -> some View{
         HStack{
-            Text(self.checklists[index].name)
-                .bold()
-                .padding()
-                .frame(width: 300, alignment: .leading)
-                .background(Color.white)
-            Spacer()
-            Image(systemName: self.checklists[index].isExpanded ? "chevron.up" : "chevron.down")
-            .padding()
+                Text(self.checklists[index].name)
+                    .bold()
+                    .padding()
+                    .frame(width: 300, alignment: .leading)
+                    .background(Color.white)
+                Spacer()
+                Image(systemName: self.checklists[index].isExpanded ? "chevron.up" : "chevron.down")
+                    .padding()
         }
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -85,7 +122,7 @@ struct ChecklistApp: View {
     
     func addItemView(for index: Int) -> some View {
         HStack {
-            TextField("Add item...", text: $newItemName)
+            TextField("Add item...", text: $checklists[index].newItemName)
             Spacer()
             Button(action: {
                 addItemToChecklist(checklistIndex: index)
@@ -105,19 +142,80 @@ struct ChecklistApp: View {
         }
     }
 
-    func addNewChecklist() {
-        let newChecklist = Checklist(name: "New Checklist", items: [])
+    func addNewChecklist(for index: Int) {
+        let newChecklist = Checklist(name: newChecklistName, items: [])
         checklists.append(newChecklist)
+    }
+    
+    func deleteChecklist(for index: Int) {
+        checklists.remove(at: index)
     }
 
     func addItemToChecklist(checklistIndex: Int) {
-        if !newItemName.isEmpty {
-            let newItem = ChecklistItem(name: newItemName, isChecked: false)
+        let checklist = checklists[checklistIndex]
+        if !checklist.newItemName.isEmpty {
+            let newItem = ChecklistItem(name: checklist.newItemName, isChecked: false)
             checklists[checklistIndex].items.append(newItem)
-            newItemName = ""
+            checklists[checklistIndex].newItemName = ""
         }
     }
 }
+
+
+struct NewChecklistView: View {
+    @Binding var isPresented: Bool
+    @Binding var checklists: [Checklist]
+    @State private var newChecklistName = ""
+
+    var body: some View {
+        HStack {
+            TextField("Add checklist...", text: $newChecklistName)
+
+            Button(action: {
+                if newChecklistName != "" {
+                    checklists.append(Checklist(name: newChecklistName, items: []))
+                    newChecklistName = ""
+                    isPresented = false
+                }}) {
+                Text("Add")
+            }
+        }
+        .padding()
+    }
+}
+
+struct SearchBar: View {
+    @Binding var searchText: String
+
+    var body: some View {
+        HStack {
+            Spacer()
+            ZStack{
+                TextField("Search...", text: $searchText)
+                    .cornerRadius(10)
+                    .padding(8)
+            }
+            Spacer()
+            if !searchText.isEmpty {
+                Button(action: {
+                    searchText = ""
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.black)
+                        .padding(.trailing, 8)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .opacity(searchText.isEmpty ? 0 : 1)
+            }
+            Spacer()
+        }
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
+        .padding(.horizontal, 20)
+        
+    }
+}
+
 
 #Preview {
     ChecklistApp()
